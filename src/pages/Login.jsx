@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginuser } from './Userslice'
+import axios, { Axios } from 'axios'
 
 const Login = () => {
 
@@ -14,7 +15,7 @@ const Login = () => {
 
 let arr=JSON.parse(localStorage.getItem('hero')) || [];
 
-const handlesubmit=(e)=>{
+const handlesubmit=async(e)=>{
 		e.preventDefault();
 		let obj={
 		
@@ -23,20 +24,31 @@ const handlesubmit=(e)=>{
 		}
 
 		console.log(obj)
-		let find=arr.find((ele)=>ele.email===obj.email)
-		console.log(find)
-		if(find){
-			if(find.password===obj.password){
-				// navigate('/')
-				dispatch(loginuser(obj.email))
-			}
-			else{
-				return alert('password incorrect')
-			}
+		try {
+			let response= await axios.post('http://localhost:8090/login',obj);
+			console.log(response);
+			let data=response.data
+			alert(data.msg)
+		} catch (error) {
+			alert(error.response.data.msg)
 		}
-		else{
-		return	alert('user not found')
-		}
+
+		//below is updated due to mongo DB server--------------->>>>>>>>>>>
+
+		// let find=arr.find((ele)=>ele.email===obj.email)
+		// console.log(find)
+		// if(find){
+		// 	if(find.password===obj.password){
+		// 		// navigate('/')
+		// 		dispatch(loginuser(obj.email))
+		// 	}
+		// 	else{
+		// 		return alert('password incorrect')
+		// 	}
+		// }
+		// else{
+		// return	alert('user not found')
+		// }
 	}
 
 

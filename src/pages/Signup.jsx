@@ -8,9 +8,9 @@ const Signup = () => {
 	let passref=useRef()
 	let navigate=useNavigate()
 
-let arr=JSON.parse(localStorage.getItem('hero')) || [];
+// let arr=JSON.parse(localStorage.getItem('hero')) || [];
 
-const handlesubmit=(e)=>{
+	const handlesubmit=async (e)=>{
 		e.preventDefault();
 		let obj={
 			name:nameref.current.value,
@@ -19,16 +19,23 @@ const handlesubmit=(e)=>{
 		}
 
 		console.log(obj)
-		let find=arr.find((ele)=>ele.email===obj.email)
-		console.log(find)
-		if(find){
-			return alert('already registered')
-		}
-		else{
-			arr.push(obj)
-			localStorage.setItem('hero',JSON.stringify(arr))
-			navigate('/login')
-		}
+
+	 try {
+		let res= await fetch('http://localhost:8090/register',{
+			method:"POST",
+			headers:{
+				'Content-Type':'application/json'
+			},
+			body:JSON.stringify(obj)
+		})
+
+		let data=await res.json();
+		console.log(data)
+		navigate('/login')
+
+	 } catch (error) {
+		console.log(error)
+	 }
 	
 	}
 

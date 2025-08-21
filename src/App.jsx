@@ -7,7 +7,7 @@ import Home from './pages/Home'
 import Login from './pages/login'
 import Signup from './pages/signup'
 import { useSelector } from 'react-redux'
-import Animation from './pages/Animation';
+import Animation from './pages/Animation'
 
 
 
